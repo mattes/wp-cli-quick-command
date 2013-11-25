@@ -38,5 +38,5 @@ wp quick-install 3.7.1
 I locally develop this plugin by setting a symlink. YOU don't have to do this.
 
 ```
-ln -s $(pwd)/wp-cli-git-command.php [...]/embed/local/opt/wp-cli/php/commands/wp-cli-git-command.php
+ln -s $(pwd)/wp-cli-quick-install-command.php [...]/embed/local/opt/wp-cli/php/commands/wp-cli-quick-install-command.php
 ```
