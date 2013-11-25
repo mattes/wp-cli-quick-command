@@ -28,7 +28,7 @@ Usage
 
 ```bash
 cd /virtual-hosts
-wp quick-install 3.7.1
+wp quick-install
 ```
 
 
@@ -38,5 +38,5 @@ wp quick-install 3.7.1
 I locally develop this plugin by setting a symlink. YOU don't have to do this.
 
 ```
-ln -s $(pwd)/wp-cli-quick-install-command.php [...]/embed/local/opt/wp-cli/php/commands/wp-cli-quick-install-command.php
+ln -s $(pwd)/wp-cli-quick-install-command.php /usr/local/opt/wp-cli/php/commands/wp-cli-quick-install-command.php
 ```
