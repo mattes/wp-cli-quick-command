@@ -21,6 +21,9 @@ composer config repositories.wp-cli composer http://wp-cli.org/package-index/
 
 # install wp-cli-git-command
 composer require mattes/wp-cli-quick-install-command=dev-master
+
+# update with
+composer update
 ```
 
 Usage
