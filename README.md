@@ -31,7 +31,7 @@ Usage
 
 ```bash
 cd /virtual-hosts
-wp quick-install
+wp quick-install xyz @todo
 ```
 
 
