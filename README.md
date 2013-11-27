@@ -3,6 +3,8 @@ wp-cli-quick-install-command
 
 Install WordPress with one command.
 
+# DO NOT USE, YET!!!!
+
 
 Installation
 ============
