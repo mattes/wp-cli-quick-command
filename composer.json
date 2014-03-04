@@ -1,8 +1,8 @@
 {
     "name": "mattes/wp-cli-quick-command",
     "type": "command",
-    "description": "Install WordPress with one command.",
-    "keywords": ["wp-cli", "install", "quick", "wordpress"],
+    "description": "Quick WordPress helpers.",
+    "keywords": ["wp-cli", "install", "quick", "wordpress", "helpers"],
     "homepage": "https://github.com/mattes/wp-cli-quick-command",
     "require": {
         "wp-cli/wp-cli": ">=0.11"

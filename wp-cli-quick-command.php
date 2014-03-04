@@ -1,11 +1,11 @@
 <?php
 /**
- * Quickly install WordPress
+ * Quick WordPress helpers.
  */
 class Quick_Command extends WP_CLI_Command {
 
   /**
-   * Get information about WP-CLI itself.
+   * Quickly install WordPress
    *
    * @when before_wp_load
    */
