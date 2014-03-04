@@ -1,9 +1,9 @@
 {
-    "name": "mattes/wp-cli-quick-install-command",
+    "name": "mattes/wp-cli-quick-command",
     "type": "command",
     "description": "Install WordPress with one command.",
     "keywords": ["wp-cli", "install", "quick", "wordpress"],
-    "homepage": "https://github.com/mattes/wp-cli-quick-install-command",
+    "homepage": "https://github.com/mattes/wp-cli-quick-command",
     "require": {
         "wp-cli/wp-cli": ">=0.11"
     },
@@ -16,10 +16,10 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/mattes/wp-cli-quick-install-command/issues",
-        "source": "https://github.com/mattes/wp-cli-quick-install-command"
+        "issues": "https://github.com/mattes/wp-cli-quick-command/issues",
+        "source": "https://github.com/mattes/wp-cli-quick-command"
     },
     "autoload": {
-        "files": [ "wp-cli-quick-install-command.php" ]
+        "files": [ "wp-cli-quick-command.php" ]
     }
 }
