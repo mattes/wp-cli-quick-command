@@ -1,5 +1,5 @@
-wp-cli-quick-install-command
-============================
+wp-cli-quick-command
+====================
 
 Install WordPress with one command.
 
