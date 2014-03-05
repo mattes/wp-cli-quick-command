@@ -29,3 +29,6 @@ Success: Created 'wp-happy-tesla-58' database.
 Success: Generated wp-config.php file.
 Success: WordPress installed successfully.
 ```
+
+See [config.example.yml](https://github.com/mattes/wp-cli-quick-command/blob/master/config.example.yml) 
+for default values.
