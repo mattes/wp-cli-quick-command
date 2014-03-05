@@ -18,6 +18,9 @@ class Quick_Command extends WP_CLI_Command {
    * [--locale=<locale>]
    * : Select which language you want to download. Defaults to 'en'.
    *
+   * [--open-url]
+   * : Open URL after installation in browser.
+   *
    * ## EXAMPLES
    *
    *     wp quick install
@@ -31,6 +34,9 @@ class Quick_Command extends WP_CLI_Command {
     // get extra config
     $extra_config = \WP_CLI::get_runner()->extra_config;
 
+    $extra_config['quick install']['domain']     = isset($extra_config['quick install']['domain']) ? $extra_config['quick install']['domain'] : null;
+    $extra_config['quick install']['http_port']  = isset($extra_config['quick install']['http_port']) ? $extra_config['quick install']['http_port'] : null;
+
     $core_download_args = array_merge(
       array('path' => getcwd()),
       isset($extra_config['core download']) ? $extra_config['core download']: array(), 
@@ -41,14 +47,14 @@ class Quick_Command extends WP_CLI_Command {
     $retries = 3;
     while($retries > 0) {
       $name = $this->_generate_random_name();
-      if(!file_exists($core_download_args['path'] . '/'. $name . '.vcap.me')) {
+      if(!file_exists($core_download_args['path'] . '/'. $name . (!empty($extra_config['quick install']['domain']) ? $extra_config['quick install']['domain'] : ''))) {
         break;
       }
       $retries--;
     }
 
     // append name to path
-    $core_download_args['path'] .= '/' . $name . '.vcap.me';
+    $core_download_args['path'] .= '/' . $name . (!empty($extra_config['quick install']['domain']) ? $extra_config['quick install']['domain'] : '');
 
     mkdir($core_download_args['path']); // it does not exist, yet
     chdir($core_download_args['path']);
@@ -95,23 +101,25 @@ class Quick_Command extends WP_CLI_Command {
 
 
     // 3) install ..
-      $core_install_args = array_merge(
-        array(
-          'admin_user'      => 'admin',
-          'admin_password'  => 'admin123',
-          'admin_email'     => 'admin@example.com'
-        ),
-        isset($extra_config['core install']) ? $extra_config['core install'] : array());
-    
+    $core_install_args = array_merge(
+      array(
+        'admin_user'      => 'admin',
+        'admin_password'  => 'admin123',
+        'admin_email'     => 'admin@example.com'
+      ),
+      isset($extra_config['core install']) ? $extra_config['core install'] : array());
+  
     $core_install_args['title'] = $name;
-    $core_install_args['url'] = 'http://' . $name . '.vcap.me:8080';
+    $core_install_args['url'] = 'http://' . $name . (!empty($extra_config['quick install']['domain']) ? $extra_config['quick install']['domain'] : '') . (!empty($extra_config['quick install']['http_port']) ? ':' . $extra_config['quick install']['http_port'] : '');
     $this->_call_internal_command('core install', array(), $core_install_args);
 
 
     // rescue directory
     chdir($rescue_directory);
 
-    WP_CLI::success(sprintf('Ready!'));
+    if(isset($assoc_args['open-url'])) {
+      WP_CLI::launch('open ' . $core_install_args['url']);
+    }
   }
 
 
