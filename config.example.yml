@@ -1,0 +1,29 @@
+#core download:
+  # path: force this path for installing, otherwise use current directory
+  # locale: en # default
+  # version: [latest] # default
+  # type ``wp help core download`` for more options
+
+core config:
+  # dbname    dbprefix    
+  # set       set         -> error  
+  # not set   not set     -> auto create dbname, use default dbprefix
+  # set       not set     -> use dbname, auto generate dbprefix
+  # not set   set         -> auto create dbname, use dbprefix
+
+  dbuser: root # required
+  dbpass: root # required
+  dbhost: 127.0.0.1:33060 # required
+  # type ``wp help core config`` for more options
+
+# core install:
+  # admin_user: admin # default
+  # admin_password: admin123 # default
+  # admin_email: admin@example.com # default
+  # url: 
+  # title: [auto generated]
+  # type ``wp help core install`` for more options
+
+# quick install:
+  # domain: ".dev" # optional, add this suffix to install directory
+  # port ?

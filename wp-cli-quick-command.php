@@ -28,48 +28,92 @@ class Quick_Command extends WP_CLI_Command {
     // rescue directory
     $rescue_directory = getcwd();
 
-    // parse some args
-    if(empty($assoc_args['path'])) $assoc_args['path'] = getcwd();
+    // get extra config
+    $extra_config = \WP_CLI::get_runner()->extra_config;
+
+    $core_download_args = array_merge(
+      array('path' => getcwd()),
+      isset($extra_config['core download']) ? $extra_config['core download']: array(), 
+      $this->_array_key_filter($assoc_args, 
+        array('path', 'locale', 'version')));
 
     // create random name
     $retries = 3;
     while($retries > 0) {
       $name = $this->_generate_random_name();
-      if(!file_exists($assoc_args['path'] . '/'. $name)) {
+      if(!file_exists($core_download_args['path'] . '/'. $name . '.vcap.me')) {
         break;
       }
       $retries--;
     }
 
     // append name to path
-    $assoc_args['path'] .= '/' . $name;
+    $core_download_args['path'] .= '/' . $name . '.vcap.me';
 
-    WP_CLI::log(sprintf("Installing to %s", $assoc_args['path']));
-    mkdir($assoc_args['path']); // it does not exist, yet
-    chdir($assoc_args['path']);
+    mkdir($core_download_args['path']); // it does not exist, yet
+    chdir($core_download_args['path']);
+    WP_CLI::log(sprintf('Installing to %s ...', $core_download_args['path']));
     
     // 1) download ...
-    $this->_call_internal_command('core download', array(), $this->_array_key_filter($assoc_args, array('path', 'version', 'locale')));
+    $this->_call_internal_command('core download', array(), $core_download_args);
+
 
     // 2) config ...
-    $this->_call_internal_command('core config');
-
-    // 3) install ..
-    $this->_call_internal_command('core install');
-
+    $core_config_args = array_merge(
+      isset($extra_config['core config']) ? $extra_config['core config'] : array(), 
+      array()); 
     
 
-    // $skipped_plugins = \WP_CLI::get_runner()->extra_config["core install"];
+    if(!empty($core_config_args['dbname']) && !empty($core_config_args['dbprefix'])) {
+      WP_CLI::error('dbname and dbprefix are set in your config file!');
+      return;
+    }
 
-    // WP_CLI::warning(print_r($skipped_plugins, true));
+    if(empty($core_config_args['dbname'])) {
+      // create db first
+      $core_config_args['dbname'] = 'wp-' . $name;
+      $mysqli = new mysqli($core_config_args['dbhost'], $core_config_args['dbuser'], $core_config_args['dbpass']);
+      if(!$mysqli) {
+        WP_CLI::error(sprintf("Unable to connect to database '%s' with user '%s'.", $core_config_args['dbhost'], $core_config_args['dbuser']));
+        return;
+      }
+      // @todo check if schema exists and throw error
+      if(!$mysqli->query("CREATE SCHEMA `" . $core_config_args['dbname']. "` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")) {
+        WP_CLI::error(sprintf("Unable to create new schema '%s'.", $core_config_args['dbname']));
+        return;
+      }
+      $mysqli->close();
+      WP_CLI::success(sprintf("Created '%s' database.", $core_config_args['dbname']));
+    }
+    elseif(empty($core_config_args['dbprefix'])) {
+      // auto generate dbprefix
+      $core_config_args['dbprefix'] = 'wp_' . $name;
+    }
 
-  
+
+    $this->_call_internal_command('core config', array(), $core_config_args);
+
+
+    // 3) install ..
+      $core_install_args = array_merge(
+        array(
+          'admin_user'      => 'admin',
+          'admin_password'  => 'admin123',
+          'admin_email'     => 'admin@example.com'
+        ),
+        isset($extra_config['core install']) ? $extra_config['core install'] : array());
+    
+    $core_install_args['title'] = $name;
+    $core_install_args['url'] = 'http://' . $name . '.vcap.me:8080';
+    $this->_call_internal_command('core install', array(), $core_install_args);
 
 
     // rescue directory
     chdir($rescue_directory);
 
+    WP_CLI::success(sprintf('Ready!'));
   }
+
 
 
   private function _call_internal_command($name, $args = array(), $assoc_args = array()) {
