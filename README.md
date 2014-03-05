@@ -17,3 +17,15 @@ Usage
 wp quick install
 wp quick delete *
 ```
+
+Example output
+
+```bash
+$ wp quick install
+Installing to /Users/mattes/Developer/php-unicorn/www/happy-tesla-58.vcap.me ...
+Downloading WordPress 3.8.1 (en_US)...
+Success: WordPress downloaded.
+Success: Created 'wp-happy-tesla-58' database.
+Success: Generated wp-config.php file.
+Success: WordPress installed successfully.
+```
