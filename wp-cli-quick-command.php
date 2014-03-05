@@ -145,12 +145,13 @@ class Quick_Command extends WP_CLI_Command {
       }
       WP_CLI::line('');
       WP_CLI::confirm('This cannot be undone! Delete all files and databases?', $assoc_args);
+      WP_CLI::line('');
 
       foreach ($dirs as $dir) {
         if(file_exists($dir)) {
           // get dbname fro wp-config.php and delete it
 
-          WP_CLI::log("Deleting '" . basename($dir) . "' ...");
+          WP_CLI::line("Deleting '" . basename($dir) . "' ...");
 
           chdir($dir);
           WP_CLI::launch("wp db drop --yes", false);
@@ -159,7 +160,7 @@ class Quick_Command extends WP_CLI_Command {
           // delete directory
           WP_CLI::launch("rm -rf $dir");
           WP_CLI::success("Deleted directory.");
-          WP_CLI::log('');       
+          WP_CLI::line('');    
         }
       }
 
