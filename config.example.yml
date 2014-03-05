@@ -12,7 +12,7 @@ core config:
 
   dbuser: root              # required
   dbpass: root              # required
-  dbhost: 127.0.0.1:33060   # required
+  dbhost: 127.0.0.1:3306    # required
 
   # type ``wp help core config`` for more options
 
