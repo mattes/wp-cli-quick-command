@@ -28,5 +28,5 @@ core config:
 
 
 # quick install:
-  # domain: ".dev"    # optional, add this suffix to install directory and url from ``core install``
+  # domain: .dev      # optional, add this suffix to install directory and url from ``core install``
   # http_port: 8080   # optional, add port to url from ``core install``
