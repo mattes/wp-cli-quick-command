@@ -4,6 +4,7 @@
  */
 class Quick_Command extends WP_CLI_Command {
 
+
   /**
    * Quickly install WordPress using defaults from config.yml
    *
@@ -19,7 +20,7 @@ class Quick_Command extends WP_CLI_Command {
    * : Select which language you want to download. Defaults to 'en'.
    *
    * [--open-url]
-   * : Open URL after installation in browser.
+   * : Open URL in browser after installation.
    *
    * ## EXAMPLES
    *
@@ -121,6 +122,53 @@ class Quick_Command extends WP_CLI_Command {
       WP_CLI::launch('open ' . $core_install_args['url']);
     }
   }
+
+
+  /**
+   * Quickly remove WordPress
+   *
+   * ## EXAMPLES
+   *
+   *     wp quick remove dir1 dir2
+   *     wp quick remove *
+   *
+   * @when before_wp_load
+   */
+  public function delete($args, $assoc_args) {
+    $rescue_dir = getcwd();
+
+    $dirs = $args;
+    if(count($dirs) > 0) {
+      WP_CLI::line('Deleting the following WordPress installations ...');
+      WP_CLI::line('');
+      foreach ($dirs as $dir) {
+        WP_CLI::line("   " . $dir);
+      }
+      WP_CLI::line('');
+      WP_CLI::confirm('This cannot be undone! Delete all files and databases?', $assoc_args);
+
+      foreach ($dirs as $dir) {
+        if(file_exists($dir)) {
+          // get dbname fro wp-config.php and delete it
+
+          WP_CLI::log("Deleting '" . basename($dir) . "' ...");
+
+          chdir($dir);
+          WP_CLI::launch("wp db drop --yes", false);
+          chdir($rescue_dir);
+
+          // delete directory
+          WP_CLI::launch("rm -rf $dir");
+          WP_CLI::success("Deleted directory.");
+          WP_CLI::log('');       
+        }
+      }
+
+    }
+  }
+
+
+
 
 
 
