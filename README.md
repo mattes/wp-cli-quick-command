@@ -3,7 +3,14 @@ wp-cli-quick-command
 
 Install WordPress with one command.
 
-# Work in progress. Do not use, yet.
+Usage
+=====
+
+```bash
+# create config.yml in your virtualhost directory then ...
+wp quick install
+wp quick delete *
+```
 
 
 Installation
