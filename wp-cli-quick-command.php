@@ -97,7 +97,6 @@ class Quick_Command extends WP_CLI_Command {
       $core_config_args['dbprefix'] = 'wp_' . $name;
     }
 
-
     $this->_call_internal_command('core config', array(), $core_config_args);
 
 

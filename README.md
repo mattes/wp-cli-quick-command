@@ -1,7 +1,7 @@
 wp-cli-quick-command
 ====================
 
-Install WordPress with one command.
+Install and delete WordPress with one command.
 
 Usage
 =====
